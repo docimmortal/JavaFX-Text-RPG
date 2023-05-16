@@ -20,6 +20,8 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -50,29 +52,11 @@ public class Main extends Application {
 		panes.clear();
 		panes.addAll(makePanes());
 		
-		HBox action = LabelWithTextField.getHBox("Action:", "Action");
+		TextField tf = LabelWithTextField.makeTextField("Action:", "Action",null);
+		HBox action = LabelWithTextField.getHBox("Action:", tf, (EventHandler<KeyEvent>) getEvent(stage, tf));
 		
 		Button ok = LabelWithTextField.getOkButton();
-		EventHandler<ActionEvent> event = new EventHandler() {
-
-			@Override
-			public void handle(Event event) {
-				TextField x = (TextField)action.getChildren().get(1);
-				gameAction.doAction(x.getText(), content.getGameContent());
-				String results=gameAction.getResult();
-				if (!results.equals("Exit")) {
-					content.addInput(results);
-					panes.set(1, content.getTextConsole());
-					VBox pane = new VBox(3, panes.toArray(new HBox[0]));
-					Scene scene = new Scene(pane, 500, 500);
-					stage.setScene(scene);
-				} else {
-					stage.close();
-					return;
-				}
-			}
-			
-		};
+		EventHandler<ActionEvent> event = (EventHandler<ActionEvent>) getEvent(stage, (TextField)action.getChildren().get(1));
 		ok.setOnAction(event);
 		action.getChildren().add(ok);
 		panes.add(action);
@@ -97,5 +81,36 @@ public class Main extends Application {
 		panes.add(content.getTextConsole());
 		
 		return panes;
+	}
+	
+	private EventHandler<? extends Event> getEvent(Stage stage, TextField textField) {
+		return new EventHandler<Event>() {
+
+			@Override
+			public void handle(Event event) {
+				boolean doAction = true;
+				if (event instanceof KeyEvent) {
+					// this is not the OK button
+					// check to see if the key event is an enter. If so, doAction.
+					if (!((KeyEvent)event).getCode().equals(KeyCode.ENTER)) {
+						doAction=false;
+					}
+				}
+				if (doAction) {
+					gameAction.doAction(textField.getText(), content.getGameContent());
+					String results=gameAction.getResult();
+					if (!results.equals("Exit")) {
+						content.addInput(results);
+						panes.set(1, content.getTextConsole());
+						VBox pane = new VBox(3, panes.toArray(new HBox[0]));
+						Scene scene = new Scene(pane, 500, 500);
+						stage.setScene(scene);
+					} else {
+						stage.close();
+					}
+				}
+			}
+			
+		};
 	}
 }

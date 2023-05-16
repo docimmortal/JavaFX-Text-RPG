@@ -1,14 +1,12 @@
 package application.rpg.fxcomponents;
 
-import java.util.HashMap;
-
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 
 /*
@@ -17,20 +15,28 @@ This contains a method that creates the Label and TextField and returns an HBox.
  */
 public class LabelWithTextField {
 	
-	public static HBox getHBox(String labelName, String textMessage, String id) {
+	public static HBox getHBox(String labelName, TextField textField, EventHandler<KeyEvent> eHandler) {
 		Label label = makeLabel(labelName);
-		TextField textField = makeTextField(textMessage, id);
+		textField.setOnKeyPressed(eHandler);
 		HBox box = new HBox(20, label, textField);
 		box.setPadding(new Insets(10));
 		return box;
 	}
 	
-	public static HBox getHBox(String labelName, String id) {
+	public static HBox getHBox(String labelName, TextField textField) {
 		Label label = makeLabel(labelName);
-		TextField textField = makeTextField("", id);
 		HBox box = new HBox(20, label, textField);
 		box.setPadding(new Insets(10));
 		return box;
+	}
+	
+	public static HBox getHBox(String labelName, String textMessage, String id, EventHandler<KeyEvent> eHandler) {
+		TextField textField = makeTextField(textMessage, id, eHandler);
+		return getHBox(labelName, textField);
+	}
+	
+	public static HBox getHBox(String labelName, String id, EventHandler<KeyEvent> eHandler) {
+		return getHBox(labelName, "", id, eHandler);
 	}
 	
 	private static Label makeLabel(String name) {
@@ -40,12 +46,22 @@ public class LabelWithTextField {
 		return label;
 	}
 
-	private static TextField makeTextField(String prompt, String id) {
+	public static TextField makeTextField(String prompt, String id, EventHandler<KeyEvent> eHandler) {
 		TextField textField = new TextField();
 		textField.setMinWidth(200);
 		textField.setMaxWidth(200);
 		textField.setPromptText(prompt);
 		textField.setId(id);
+		if (eHandler != null) {
+			textField.setOnKeyPressed(eHandler);
+		}
+		/*new EventHandler<KeyEvent>() {
+		    @Override
+		    public void handle(KeyEvent ke) {
+		        if (ke.getCode().equals(KeyCode.ENTER)) {
+		            System.out.println("ENTER hit");
+		        }
+		    }});*/
 		return textField;
 	}
 	
