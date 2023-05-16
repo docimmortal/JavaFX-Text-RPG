@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import application.rpg.entities.Location;
+import application.rpg.entities.Player;
 
 public class FileUtilities {
 
-	public static void writeLocations(List<Location> objects, String filename) {
-		 
+	public static void write(List<? extends Object> objects, String filename) { 
         try  (FileOutputStream fileOut = new FileOutputStream(filename);
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
         	for (Object object: objects) {
@@ -24,25 +24,35 @@ public class FileUtilities {
         }
     }
 	
-	public static List<Location> readLocations(String filename) {
+	public static List<? extends Object> read(String filename) {
 		
 		boolean loop=true;
-		List<Location> locations = new ArrayList<>();
+		List<Location> locations = null;
+		List<Player> players = null;
         try  (FileInputStream fileIn = new FileInputStream(filename);
             ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
-        	while (loop) {
+        	do {
         		 Object obj = objectIn.readObject();
         		 if (obj != null) {
-        			 locations.add((Location)obj);
+        			 if (obj instanceof Location) {
+        				 if (locations == null) {
+        					 locations = new ArrayList<Location>();
+        				 }
+        				 locations.add((Location)obj);
+        			 } else {
+        				 if (players == null) {
+        					 players = new ArrayList<Player>();
+        				 }
+        				 players.add((Player)obj);
+        			 }
         		 } else {
         			 loop=false;
         		 }
-        	}
-        } catch (EOFException ex) {
-        	// do nothing
+        	} while(loop);
+        } catch (EOFException e) {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return locations;
+        return (locations == null)?players:locations;
     }
 }

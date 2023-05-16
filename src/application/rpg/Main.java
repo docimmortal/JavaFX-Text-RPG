@@ -42,7 +42,7 @@ public class Main extends Application {
 		
 		Map<Integer, Location> map = new HashMap<>();
 		
-		List<Location> locs = FileUtilities.readLocations(".//locations.dat");
+		List<Location> locs = (List<Location>) FileUtilities.read(".//locations.dat");
 		map = Convert.toMap(locs);
 		
 		// load from method or file

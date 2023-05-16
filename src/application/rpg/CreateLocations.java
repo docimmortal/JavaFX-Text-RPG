@@ -19,6 +19,6 @@ public class CreateLocations {
 		
 		List<Location> locations = new ArrayList<>(map.values());
 		
-		FileUtilities.writeLocations(locations, ".\\locations.dat");
+		FileUtilities.write(locations, ".\\locations.dat");
 	}
 }
