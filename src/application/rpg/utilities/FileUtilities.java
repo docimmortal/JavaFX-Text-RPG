@@ -10,6 +10,8 @@ import java.util.List;
 
 import application.rpg.entities.Location;
 import application.rpg.entities.Player;
+import uber.rpg.entities.Adventure;
+import uber.rpg.entities.UberLocation;
 
 public class FileUtilities {
 
@@ -18,6 +20,7 @@ public class FileUtilities {
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut)) {
         	for (Object object: objects) {
         		objectOut.writeObject(object);
+        		System.out.println(object);
         	}
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -28,22 +31,36 @@ public class FileUtilities {
 		
 		boolean loop=true;
 		List<Location> locations = null;
+		List<UberLocation> uberLocations = null;
 		List<Player> players = null;
+		List<Adventure> adventures = null;
         try  (FileInputStream fileIn = new FileInputStream(filename);
             ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
         	do {
         		 Object obj = objectIn.readObject();
         		 if (obj != null) {
-        			 if (obj instanceof Location) {
+        			 if (obj.getClass() == Location.class) {
         				 if (locations == null) {
         					 locations = new ArrayList<Location>();
         				 }
         				 locations.add((Location)obj);
-        			 } else {
+        			 } else if (obj.getClass() == UberLocation.class) {
+        				 if (uberLocations == null) {
+        					 uberLocations = new ArrayList<UberLocation>();
+        				 }
+        				uberLocations.add((UberLocation)obj);
+        			 } else if (obj instanceof Player) {
         				 if (players == null) {
         					 players = new ArrayList<Player>();
         				 }
         				 players.add((Player)obj);
+        			 } else if (obj instanceof Adventure) {
+        				 if (adventures == null) {
+        					 adventures = new ArrayList<Adventure>();
+        				 }
+        				 adventures.add((Adventure)obj);
+        			 } else {
+        				 System.out.println("Unknown object.");
         			 }
         		 } else {
         			 loop=false;
@@ -53,6 +70,16 @@ public class FileUtilities {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return (locations == null)?players:locations;
+        if (locations != null) {
+        	return locations;
+        } else if (uberLocations != null) {
+        	return uberLocations;
+        } else if (adventures != null) {
+        	return adventures;
+        } else {
+        	return players;
+        }
     }
+	
+	
 }

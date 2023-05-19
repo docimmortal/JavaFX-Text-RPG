@@ -1,6 +1,7 @@
 package application.rpg.entities;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class Location implements Serializable{
 
@@ -70,7 +71,7 @@ public class Location implements Serializable{
 		if (locationIds[3]!=0) {
 			exs.append("West");
 		}
-		sb.append(exs.toString().trim());
+		sb.append(exs.toString().trim().replaceAll(" ", ", "));
 		return sb.toString();
 	}
 	
@@ -81,6 +82,12 @@ public class Location implements Serializable{
 		}
 		out+=getExits()+"\n";
 		return out;
+	}
+
+	@Override
+	public String toString() {
+		return "Location [thisLocationId=" + thisLocationId + ", name=" + name + ", description=" + description
+				+ ", locationIds=" + Arrays.toString(locationIds) + "]";
 	}
 
 }
