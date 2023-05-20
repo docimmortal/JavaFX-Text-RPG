@@ -1,2 +1,6 @@
 /bin/
 *.class
+*.prefs
+.settings/org.eclipse.wst.common.project.facet.core.xml
+.project
+.classpath
