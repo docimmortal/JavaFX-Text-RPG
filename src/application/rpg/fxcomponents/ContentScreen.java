@@ -7,6 +7,7 @@ import application.rpg.entities.Location;
 import application.rpg.entities.Player;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
+import uber.rpg.entities.UberLocation;
 
 public class ContentScreen {
 	
@@ -18,7 +19,7 @@ public class ContentScreen {
 		sb = new StringBuilder();
 	}
 	
-	public void setLocations(Map<Integer, Location> locations) {
+	public void setLocations(Map<Integer, UberLocation> locations) {
 		gameContent.setLocationMap(locations);
 	}
 	
