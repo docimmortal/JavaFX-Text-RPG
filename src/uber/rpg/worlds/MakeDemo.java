@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import application.rpg.utilities.FileUtilities;
 import uber.rpg.entities.Adventure;
+import uber.rpg.entities.UberItem;
 import uber.rpg.entities.UberLocation;
 import uber.rpg.utilities.UberFileUtilities;
 
@@ -32,10 +32,19 @@ public class MakeDemo {
 		int exits3[] = {1,4,0,0};
 		UberLocation room3 = new UberLocation("Kitchen",3,exits3);
 		room3.setDescription("There is a fridge, stove, and a pantry.");
+		UberItem apple = new UberItem("apple","A red apple.");
+		apple.setArticle("an");
+		apple.setEdible();
+		room3.addItem(apple);
+		room3.addItem(new UberItem("coffee mug","A black coffee mug."));
 		map.put(3,room3);
 		int exits4[] = {2,0,0,3};
 		UberLocation room4 = new UberLocation("Den",4,exits4);
 		room4.setDescription("There is a bookcase filled with old books. A padded chair is in the middle of the room.");
+		UberItem chest = new UberItem("chest","wooden chest");
+		UberItem tome = new UberItem("tome","A dusty old tome.");
+		tome.setInsideItem(chest);
+		room4.addItem(chest);
 		map.put(4,room4);
 		
 		

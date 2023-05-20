@@ -25,6 +25,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import uber.rpg.entities.UberLocation;
 
 public class Main extends Application {
 	
@@ -40,10 +41,10 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		
-		Map<Integer, Location> map = new HashMap<>();
+		Map<Integer, UberLocation> map = new HashMap<>();
 		
-		List<Location> locs = (List<Location>) FileUtilities.read(".//demo.dat");
-		map = Convert.toMap(locs);
+		List<UberLocation> locs = (List<UberLocation>) FileUtilities.read(".//demo.dat");
+		map = Convert.toUberMap(locs);
 		
 		// load from method or file
 		content.setLocations(map);
@@ -77,7 +78,8 @@ public class Main extends Application {
 		panes.add(menu);
 		
 		Location loc = content.getLocation(1);
-		content.setInput(loc.getInfo());
+		content.setInput(gameAction.getCommands());
+		content.addInput(loc.getInfo());
 		panes.add(content.getTextConsole());
 		
 		return panes;
@@ -100,7 +102,7 @@ public class Main extends Application {
 					gameAction.doAction(textField.getText(), content.getGameContent());
 					String results=gameAction.getResult();
 					if (!results.equals("Exit")) {
-						content.addInput(results);
+						content.setInput(results);
 						panes.set(1, content.getTextConsole());
 						VBox pane = new VBox(3, panes.toArray(new HBox[0]));
 						Scene scene = new Scene(pane, 500, 500);
