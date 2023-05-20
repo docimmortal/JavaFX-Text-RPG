@@ -1,6 +1,10 @@
 package uber.rpg.entities;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
+import uber.rpg.entities.enums.Property;
 
 public class UberItem implements Serializable{
 
@@ -8,19 +12,49 @@ public class UberItem implements Serializable{
 	
 	private String name;
 	private String description;
-	private boolean edible;
-	private boolean key;
+	private String roomDescription;
 	private UberItem insideItem;
 	private String article;
+	private Map<Property, Object> properties;
 	
 	public UberItem(String name, String description) {
-		super();
 		this.name = name;
 		this.description = description;
-		edible=false;
-		key=false;
 		insideItem=null;
 		article="a ";
+		properties = new HashMap<>();
+		roomDescription = description;
+	}
+	
+	public UberItem(String name, String description, String roomDescription) {
+		this.name = name;
+		this.description = description;
+		insideItem=null;
+		article="a ";
+		properties = new HashMap<>();
+		this.roomDescription = roomDescription;
+	}
+		
+	public String getRoomDescription() {
+		return roomDescription;
+	}
+
+	public void setRoomDescription(String roomDescription) {
+		this.roomDescription = roomDescription;
+	}
+
+	public void addProperty(Property property, Object details) {
+		properties.put(property, details);
+	}
+	
+	public boolean hasProperty(String name) {
+		Property p = Property.valueOf(name.toUpperCase());
+		return properties.containsKey(p);
+	}
+	
+	public Object getPropertyDetails(String name) {
+		Property p = Property.valueOf(name.toUpperCase());
+		return properties.get(p);
 	}
 	
 	public void setArticle(String article) {
@@ -43,12 +77,6 @@ public class UberItem implements Serializable{
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public void setEdible() {
-		this.edible=true;
-	}
-	public boolean isEdible() {
-		return edible;
-	}
 	
 	public UberItem getInsideItem() {
 		return insideItem;
@@ -58,24 +86,14 @@ public class UberItem implements Serializable{
 		this.insideItem = insideItem;
 	}
 
-	public boolean isKey() {
-		return key;
-	}
-	public void setKey() {
-		this.key = true;
-	}
-
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(name);
 		builder.append("\ndescription:");
 		builder.append(description+"\n");
-		if (edible) {
-			builder.append("[edible]");
-		}
-		if (key) {
-			builder.append("[key]");
+		for (Property property: properties.keySet()) {
+			builder.append("["+property+"]");
 		}
 		if (insideItem != null) {
 			builder.append("\nIs inside "+insideItem.getName());

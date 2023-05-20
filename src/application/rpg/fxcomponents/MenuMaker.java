@@ -34,7 +34,7 @@ public class MenuMaker {
                 fileMenu
         );
         HBox hbox = new HBox(menuBar);
-        hbox.setPrefSize(200, 800);
+        hbox.setPrefSize(50, 800);
         return hbox;
 	}
 }

@@ -11,12 +11,26 @@ public class UberLocation extends Location {
 	
 	// item(s) at this location;
 	private Map<String, UberItem> itemMap;
+	
+	private String imageFilename;
 
 	public UberLocation(String name, int thisLocationId, int[] locationIds) {
 		super(name, thisLocationId, locationIds);
 		itemMap = new HashMap<>();
 	}
 	
+	public String getImageFilename() {
+		return imageFilename;
+	}
+
+
+
+	public void setImageFilename(String imageFilename) {
+		this.imageFilename = imageFilename;
+	}
+
+
+
 	public void addItem(UberItem item) {
 		itemMap.put(item.getName(), item);
 	}

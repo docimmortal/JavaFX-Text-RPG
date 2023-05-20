@@ -31,6 +31,10 @@ public class ContentScreen {
 		return gameContent.getLocation(locationId);
 	}
 	
+	public Location getCurrentLocation() {
+		return gameContent.getCurrentLocation();
+	}
+	
 	public GameContent getGameContent() {
 		return gameContent;
 	}
@@ -49,8 +53,8 @@ public class ContentScreen {
 	
 	public HBox getTextConsole() {
 		TextArea content = new TextArea();
-		content.setMinWidth(500);
-		content.setMinHeight(400);
+		content.setMinWidth(1000);
+		content.setMinHeight(200);
 		content.setText(sb.toString());
 		content.setEditable(false);
 		content.setMouseTransparent(true);
