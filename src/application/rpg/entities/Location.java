@@ -2,6 +2,9 @@ package application.rpg.entities;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Location implements Serializable{
 
@@ -11,6 +14,10 @@ public class Location implements Serializable{
 	private String name;
 	private String description;
 	private int[] locationIds;
+	
+	// item(s) at this location;
+	private Map<String, Item> itemMap;
+	private String imageFilename;
 	
 	public Location(String name, int thisLocationId, int[] locationIds) {
 		this.name = name;
@@ -22,6 +29,7 @@ public class Location implements Serializable{
 		} else {
 			locationIds = new int[4];
 		}
+		itemMap = new HashMap<>();
 	}
 
 	public String getName() {
@@ -36,6 +44,14 @@ public class Location implements Serializable{
 		this.description = description;
 	}
 
+	public String getImageFilename() {
+		return imageFilename;
+	}
+
+	public void setImageFilename(String imageFilename) {
+		this.imageFilename = imageFilename;
+	}
+	
 	public int getThisLocationId() {
 		return thisLocationId;
 	}
@@ -75,10 +91,39 @@ public class Location implements Serializable{
 		return sb.toString();
 	}
 	
+	public void addItem(Item item) {
+		itemMap.put(item.getName(), item);
+	}
+	
+	public Item getItem(String name) {
+		return itemMap.get(name);
+	}
+	
+	public void removeItem(String name) {
+		itemMap.remove(name);
+	}
+	
+	public boolean containsItem(String name) {
+		return itemMap.containsKey(name);
+	}
+	
 	public String getInfo() {
-		String out = name+"\n";
-		if (description.length()>0) {
-			out+=description+"\n";
+		String out = getName()+"\n";
+		if (getDescription().length()>0) {
+			out+=getDescription()+"\n";
+		}
+		if (itemMap.size() > 0) {
+			Collection<Item> items = itemMap.values();
+			String itemNames="";
+			for (Item item: items) {
+				if (item.getInsideItem() == null) {
+					itemNames+=item.getArticleAndName()+"_";
+				}
+			}
+			if (itemNames.length()>0) {
+				itemNames=itemNames.trim().substring(0, itemNames.length()-1).replaceAll("_", ", ");
+				out+="You see: "+itemNames+"\n";
+			}
 		}
 		out+=getExits()+"\n";
 		return out;
@@ -89,5 +134,6 @@ public class Location implements Serializable{
 		return "Location [thisLocationId=" + thisLocationId + ", name=" + name + ", description=" + description
 				+ ", locationIds=" + Arrays.toString(locationIds) + "]";
 	}
+
 
 }

@@ -1,3 +1,4 @@
+package application.rpg.entities;
 
 public class Fighter extends CharacterClass{
 	public Fighter(String name) {

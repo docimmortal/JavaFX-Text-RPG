@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 
+import application.rpg.entities.Location;
 import application.rpg.utilities.FileUtilities;
 
 public class Adventure implements Serializable{
@@ -12,12 +13,12 @@ public class Adventure implements Serializable{
 	
 	private String name;
 	private String description;
-	private String uberLocationFileName;
+	private String locationFileName;
 	
-	public Adventure(String name, String description, String uberLocationFileName) {
+	public Adventure(String name, String description, String locationFileName) {
 		this.name = name;
 		this.description = description;
-		this.uberLocationFileName = uberLocationFileName;
+		this.locationFileName = locationFileName;
 	}
 	
 	public void displayInfo() {
@@ -25,8 +26,8 @@ public class Adventure implements Serializable{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Map<Integer, UberLocation> loadGame() {
-		return (Map<Integer, UberLocation>) FileUtilities.read(uberLocationFileName);
+	public Map<Integer, Location> loadGame() {
+		return (Map<Integer, Location>) FileUtilities.read(locationFileName);
 	}
 
 	public String getName() {
@@ -39,7 +40,7 @@ public class Adventure implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(name, uberLocationFileName);
+		return Objects.hash(name, locationFileName);
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public class Adventure implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Adventure other = (Adventure) obj;
-		return Objects.equals(name, other.name) && Objects.equals(uberLocationFileName, other.uberLocationFileName);
+		return Objects.equals(name, other.name) && Objects.equals(locationFileName, other.locationFileName);
 	}
 
 	@Override

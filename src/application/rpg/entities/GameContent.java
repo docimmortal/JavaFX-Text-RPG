@@ -3,18 +3,18 @@ package application.rpg.entities;
 import java.util.HashMap;
 import java.util.Map;
 
-import uber.rpg.entities.UberLocation;
-import uber.rpg.entities.UberPlayer;
-
 public class GameContent {
 
-	private UberPlayer player;
+	private Player player;
 	private int currentLocation;
-	private Map<Integer, UberLocation> locationMap;
+	private Map<Integer, Location> locationMap;
+	
+	private CharacterClass character;
+	private Monster monster;
 
 	public GameContent() {
 		currentLocation=1;
-		player=new UberPlayer();
+		player=new Player();
 		locationMap = new HashMap<>();
 	}
 	
@@ -26,27 +26,43 @@ public class GameContent {
 		this.currentLocation=locationId;
 	}
 	
-	public UberLocation getCurrentLocation() {
+	public Location getCurrentLocation() {
 		return locationMap.get(currentLocation);
 	}
-	public void setCurrentLocation(UberLocation uc) {
-		locationMap.put(currentLocation, uc);
+	public void setCurrentLocation(Location current) {
+		locationMap.put(currentLocation, current);
 	}
 	
 	public void updateLocation(int newLocationId) {
 		currentLocation = newLocationId;
 	}
 
-	public void setLocationMap(Map<Integer, UberLocation> locationMap) {
+	public void setLocationMap(Map<Integer, Location> locationMap) {
 		this.locationMap = locationMap;
 	}
 
-	public UberPlayer getPlayer() {
+	public Player getPlayer() {
 		return player;
 	}
 
-	public void setPlayer(UberPlayer player) {
+	public void setPlayer(Player player) {
 		this.player = player;
+	}
+
+	public CharacterClass getCharacter() {
+		return character;
+	}
+
+	public void setCharacter(CharacterClass character) {
+		this.character = character;
+	}
+
+	public Monster getMonster() {
+		return monster;
+	}
+
+	public void setMonster(Monster monster) {
+		this.monster = monster;
 	}
 	
 }

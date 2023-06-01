@@ -1,3 +1,4 @@
+package application.rpg.entities;
 
 public class Wizard extends CharacterClass{
 	public Wizard(String name) {

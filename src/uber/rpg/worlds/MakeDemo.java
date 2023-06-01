@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import application.rpg.entities.Item;
+import application.rpg.entities.Location;
 import uber.rpg.entities.Adventure;
-import uber.rpg.entities.UberItem;
-import uber.rpg.entities.UberLocation;
 import uber.rpg.entities.enums.Property;
 import uber.rpg.utilities.UberFileUtilities;
 
@@ -21,40 +21,40 @@ public class MakeDemo {
 	 
 	*/
 	public static void main(String[] args) {
-		Map<Integer, UberLocation> map = new HashMap<>();
+		Map<Integer, Location> map = new HashMap<>();
 		int exits1[] = {0,2,3,0};
-		UberLocation room1 = new UberLocation("Living room",1,exits1);
+		Location room1 = new Location("Living room",1,exits1);
 		room1.setDescription("There is couch, a coffee table, and a chair.");
-		UberItem key = new UberItem("key","copper key");
+		Item key = new Item("key","copper key");
 		key.addProperty(Property.KEY, "");
 		room1.setImageFilename("images//living-room.jpg");
 		map.put(1,room1);
 		int exits2[] = {0,0,4,1};
-		UberLocation room2 = new UberLocation("Dining Room",2,exits2);
+		Location room2 = new Location("Dining Room",2,exits2);
 		room2.setDescription("There is a wooden table with one chair on each side.");
 		room2.setImageFilename("images//dining-room.jpg");
 		map.put(2,room2);
 		int exits3[] = {1,4,0,0};
-		UberLocation room3 = new UberLocation("Kitchen",3,exits3);
+		Location room3 = new Location("Kitchen",3,exits3);
 		room3.setDescription("There is a fridge, stove, and a pantry.");
-		UberItem apple = new UberItem("apple","A red apple.");
+		Item apple = new Item("apple","A red apple.");
 		apple.setArticle("an");
 		apple.addProperty(Property.EDIBLE, "Crunch");
 		room3.addItem(apple);
-		room3.addItem(new UberItem("coffee mug","An empty black coffee mug."));
+		room3.addItem(new Item("coffee mug","An empty black coffee mug."));
 		map.put(3,room3);
 		int exits4[] = {2,0,0,3};
-		UberLocation room4 = new UberLocation("Den",4,exits4);
+		Location room4 = new Location("Den",4,exits4);
 		room4.setDescription("There is a bookcase filled with old books. A padded chair is in the middle of the room.");
-		UberItem chest = new UberItem("chest","wooden chest");
+		Item chest = new Item("chest","wooden chest");
 		chest.addProperty(Property.LOCKED, key); // can be unlocked with key
-		UberItem tome = new UberItem("tome","A dusty old tome.");
+		Item tome = new Item("tome","A dusty old tome.");
 		tome.setInsideItem(chest);
 		room4.addItem(chest);
 		map.put(4,room4);
 		
 		
-		List<UberLocation> locations = new ArrayList<>(map.values());
+		List<Location> locations = new ArrayList<>(map.values());
 		
 		UberFileUtilities.write(locations, ".\\demo.dat");
 		

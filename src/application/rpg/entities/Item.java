@@ -1,4 +1,4 @@
-package uber.rpg.entities;
+package application.rpg.entities;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -6,18 +6,18 @@ import java.util.Map;
 
 import uber.rpg.entities.enums.Property;
 
-public class UberItem implements Serializable{
+public class Item implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
 	private String name;
 	private String description;
 	private String roomDescription;
-	private UberItem insideItem;
+	private Item insideItem;
 	private String article;
 	private Map<Property, Object> properties;
 	
-	public UberItem(String name, String description) {
+	public Item(String name, String description) {
 		this.name = name;
 		this.description = description;
 		insideItem=null;
@@ -26,7 +26,7 @@ public class UberItem implements Serializable{
 		roomDescription = description;
 	}
 	
-	public UberItem(String name, String description, String roomDescription) {
+	public Item(String name, String description, String roomDescription) {
 		this.name = name;
 		this.description = description;
 		insideItem=null;
@@ -78,11 +78,11 @@ public class UberItem implements Serializable{
 		this.description = description;
 	}
 	
-	public UberItem getInsideItem() {
+	public Item getInsideItem() {
 		return insideItem;
 	}
 
-	public void setInsideItem(UberItem insideItem) {
+	public void setInsideItem(Item insideItem) {
 		this.insideItem = insideItem;
 	}
 

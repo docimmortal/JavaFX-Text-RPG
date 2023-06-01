@@ -1,3 +1,4 @@
+package application.rpg.entities;
 
 public class CharacterClass {
 		private int hp = 0;

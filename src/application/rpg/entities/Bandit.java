@@ -1,3 +1,4 @@
+package application.rpg.entities;
 
 public class Bandit extends CharacterClass{
 	public Bandit(String name) {

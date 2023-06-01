@@ -11,7 +11,6 @@ import java.util.List;
 import application.rpg.entities.Location;
 import application.rpg.entities.Player;
 import uber.rpg.entities.Adventure;
-import uber.rpg.entities.UberLocation;
 
 public class FileUtilities {
 
@@ -31,7 +30,6 @@ public class FileUtilities {
 		
 		boolean loop=true;
 		List<Location> locations = null;
-		List<UberLocation> uberLocations = null;
 		List<Player> players = null;
 		List<Adventure> adventures = null;
         try  (FileInputStream fileIn = new FileInputStream(filename);
@@ -44,12 +42,7 @@ public class FileUtilities {
         					 locations = new ArrayList<Location>();
         				 }
         				 locations.add((Location)obj);
-        			 } else if (obj.getClass() == UberLocation.class) {
-        				 if (uberLocations == null) {
-        					 uberLocations = new ArrayList<UberLocation>();
-        				 }
-        				uberLocations.add((UberLocation)obj);
-        			 } else if (obj instanceof Player) {
+        			 }  else if (obj instanceof Player) {
         				 if (players == null) {
         					 players = new ArrayList<Player>();
         				 }
@@ -72,8 +65,6 @@ public class FileUtilities {
         }
         if (locations != null) {
         	return locations;
-        } else if (uberLocations != null) {
-        	return uberLocations;
         } else if (adventures != null) {
         	return adventures;
         } else {

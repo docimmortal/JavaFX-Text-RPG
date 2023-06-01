@@ -27,7 +27,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import uber.rpg.entities.UberLocation;
 
 public class Main extends Application {
 	
@@ -43,11 +42,11 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		
-		Map<Integer, UberLocation> map = new HashMap<>();
+		Map<Integer, Location> map = new HashMap<>();
 		
 		// load locations from method or file
-		List<UberLocation> locs = (List<UberLocation>) FileUtilities.read(".//demo.dat");
-		map = Convert.toUberMap(locs);
+		List<Location> locs = (List<Location>) FileUtilities.read(".//demo.dat");
+		map = Convert.toMap(locs);
 		content.setLocations(map);
 		
 		panes.clear();
@@ -79,8 +78,8 @@ public class Main extends Application {
 		
 		Location loc = content.getLocation(1);
 		
-		if (loc instanceof UberLocation) {
-			String filename =((UberLocation)loc).getImageFilename();
+		if (loc instanceof Location) {
+			String filename =((Location)loc).getImageFilename();
 			if (filename != null) {
 				ImageView imageView = ImageLoader.load(filename, false);
 				panes.add(new HBox(imageView));
@@ -113,8 +112,8 @@ public class Main extends Application {
 					if (!results.equals("Exit")) {
 						content.setInput(results);
 						Location loc=content.getCurrentLocation();
-						if (loc instanceof UberLocation) {
-							String filename = ((UberLocation)loc).getImageFilename();
+						if (loc instanceof Location) {
+							String filename = ((Location)loc).getImageFilename();
 							if (filename != null) {
 								ImageView imageView = ImageLoader.load(filename, false);
 								panes.set(1,new HBox(imageView));
