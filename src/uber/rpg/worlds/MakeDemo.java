@@ -44,6 +44,7 @@ public class MakeDemo {
 		apple.addProperty(Property.EDIBLE, "Crunch");
 		room3.addItem(apple);
 		room3.addItem(new Item("coffee mug","An empty black coffee mug."));
+		room3.setImageFilename("images//kitchen.jpg"); 
 		map.put(3,room3);
 		int exits4[] = {2,0,0,3};
 		Location room4 = new Location("Den",4,exits4);

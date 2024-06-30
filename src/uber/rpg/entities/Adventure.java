@@ -1,4 +1,4 @@
-package uber.rpg.entities;
+  package uber.rpg.entities;
 
 import java.io.Serializable;
 import java.util.Map;
