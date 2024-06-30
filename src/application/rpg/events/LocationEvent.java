@@ -41,14 +41,19 @@ public class LocationEvent extends Event {
 			result+=current.getInfo();
 		} else if (loc == -1) {
 			if (action.contains("Take")&& current instanceof Location) {
-				boolean success = doTake(action.substring(5), current, player);
-				if (success) {
-					result="Took "+action.substring(5)+".\n";
+				if (action.length() > 6 ) {
+					boolean success = doTake(action.substring(5), current, player);
+					if (success) {
+						result="Took "+action.substring(5)+".\n";
+					} else {
+						result="There is no "+action.substring(5)+" here.\n";
+					}
+					result+=current.getInfo();
+					gameContent.setCurrentLocation(current);
 				} else {
-					result="There is no "+action.substring(5)+" here.\n";
+					result = "Take what?\n";
+					result+=current.getInfo();
 				}
-				result+=current.getInfo();
-				gameContent.setCurrentLocation(current);
 			} else if (action.equals("Inv")) {
 				List<String> items = player.getInventory();
 				result="Inventory: ";

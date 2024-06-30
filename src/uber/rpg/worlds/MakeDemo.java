@@ -27,6 +27,8 @@ public class MakeDemo {
 		room1.setDescription("There is couch, a coffee table, and a chair.");
 		Item key = new Item("key","copper key");
 		key.addProperty(Property.KEY, "");
+		room1.addItem(key);
+		// The image is optional. Image will be last image shown if not found.
 		room1.setImageFilename("images//living-room.jpg");
 		map.put(1,room1);
 		int exits2[] = {0,0,4,1};
@@ -46,6 +48,7 @@ public class MakeDemo {
 		int exits4[] = {2,0,0,3};
 		Location room4 = new Location("Den",4,exits4);
 		room4.setDescription("There is a bookcase filled with old books. A padded chair is in the middle of the room.");
+		room4.setImageFilename("images//den.jpg"); 
 		Item chest = new Item("chest","wooden chest");
 		chest.addProperty(Property.LOCKED, key); // can be unlocked with key
 		Item tome = new Item("tome","A dusty old tome.");
