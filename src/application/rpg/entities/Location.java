@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Location implements Serializable{
 
@@ -105,6 +107,10 @@ public class Location implements Serializable{
 	
 	public boolean containsItem(String name) {
 		return itemMap.containsKey(name);
+	}
+	
+	public Set<Item> getAllItems() {
+		return new HashSet<Item>(itemMap.values());
 	}
 	
 	public String getInfo() {

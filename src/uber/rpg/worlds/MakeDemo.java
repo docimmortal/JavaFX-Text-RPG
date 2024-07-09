@@ -25,7 +25,7 @@ public class MakeDemo {
 		int exits1[] = {0,2,3,0};
 		Location room1 = new Location("Living room",1,exits1);
 		room1.setDescription("There is couch, a coffee table, and a chair.");
-		Item key = new Item("key","copper key");
+		Item key = new Item("key","copper key","images//key.png",500,274);
 		key.addProperty(Property.KEY, "");
 		room1.addItem(key);
 		// The image is optional. Image will be last image shown if not found.

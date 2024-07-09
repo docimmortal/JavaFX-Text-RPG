@@ -15,6 +15,9 @@ public class Item implements Serializable{
 	private String roomDescription;
 	private Item insideItem;
 	private String article;
+	private String filename;
+	private int xLoc;
+	private int yLoc;
 	private Map<Property, Object> properties;
 	
 	public Item(String name, String description) {
@@ -24,6 +27,19 @@ public class Item implements Serializable{
 		article="a ";
 		properties = new HashMap<>();
 		roomDescription = description;
+		filename="";
+	}
+	
+	public Item(String name, String description, String filename, int xLoc, int yLoc) {
+		this.name = name;
+		this.description = description;
+		insideItem=null;
+		article="a ";
+		properties = new HashMap<>();
+		this.roomDescription = description;
+		this.filename=filename;
+		this.xLoc=xLoc;
+		this.yLoc=yLoc;
 	}
 	
 	public Item(String name, String description, String roomDescription) {
@@ -33,6 +49,19 @@ public class Item implements Serializable{
 		article="a ";
 		properties = new HashMap<>();
 		this.roomDescription = roomDescription;
+		filename="";
+	}
+	
+	public Item(String name, String description, String roomDescription, String filename, int xLoc, int yLoc) {
+		this.name = name;
+		this.description = description;
+		insideItem=null;
+		article="a ";
+		properties = new HashMap<>();
+		this.roomDescription = roomDescription;
+		this.filename=filename;
+		this.xLoc=xLoc;
+		this.yLoc=yLoc;
 	}
 		
 	public String getRoomDescription() {
@@ -84,6 +113,30 @@ public class Item implements Serializable{
 
 	public void setInsideItem(Item insideItem) {
 		this.insideItem = insideItem;
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+
+	public int getxLoc() {
+		return xLoc;
+	}
+
+	public void setxLoc(int xLoc) {
+		this.xLoc = xLoc;
+	}
+
+	public int getyLoc() {
+		return yLoc;
+	}
+
+	public void setyLoc(int yLoc) {
+		this.yLoc = yLoc;
 	}
 
 	@Override

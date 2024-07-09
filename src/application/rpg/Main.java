@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import application.rpg.entities.GameContent;
+import application.rpg.entities.Item;
 import application.rpg.entities.Location;
 import application.rpg.fxcomponents.ContentScreen;
 import application.rpg.fxcomponents.ImageLoader;
@@ -18,13 +20,17 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -81,8 +87,21 @@ public class Main extends Application {
 		if (loc instanceof Location) {
 			String filename =((Location)loc).getImageFilename();
 			if (filename != null) {
+				Group group = new Group();
 				ImageView imageView = ImageLoader.load(filename, false);
-				panes.add(new HBox(imageView));
+				group.getChildren().add(imageView);
+				
+				Set<Item> items = loc.getAllItems();
+				for (Item item: items) {
+					String itemFilename=item.getFilename();
+					if (itemFilename != null && itemFilename.length()>0) {
+						ImageView imageView2 = ImageLoader.load(itemFilename,false);
+						imageView2.setLayoutX(item.getxLoc());
+						imageView2.setLayoutY(item.getyLoc());
+						group.getChildren().add(imageView2);
+					}
+				}
+				panes.add(new HBox(group));
 			}
 		}
 		
