@@ -10,11 +10,12 @@ import application.rpg.utilities.Debug;
 public class LocationEvent extends Event {
 
 	private static boolean debugOn=false;
+	private static String result;
 	
 	public static String doAction(String action, GameContent gameContent) {
 		Location current = gameContent.getCurrentLocation();
 		Player player = gameContent.getPlayer();
-		String result="";
+		result="";
 		
 		int loc=-1;
 		Debug.msg(debugOn,"HERE: "+current.getThisLocationId());
@@ -43,6 +44,7 @@ public class LocationEvent extends Event {
 			if (action.contains("Take")&& current instanceof Location) {
 				if (action.length() > 6 ) {
 					boolean success = doTake(action.substring(5), current, player);
+					System.out.println(">>>>>>>>"+action.substring(5)+" : "+success);
 					if (success) {
 						result="Took "+action.substring(5)+".\n";
 					} else {
@@ -70,6 +72,10 @@ public class LocationEvent extends Event {
 		} else if (loc == 0){
 			result="You cannot go "+action.toLowerCase()+".\n";
 		}
+		return result;
+	}
+	
+	public String getResult() {
 		return result;
 	}
 	

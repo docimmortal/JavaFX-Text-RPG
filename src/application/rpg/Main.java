@@ -20,7 +20,6 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -28,9 +27,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -38,7 +35,7 @@ public class Main extends Application {
 	
 	final GameAction gameAction = new GameAction();
 	final ContentScreen content = new ContentScreen(new GameContent());
-	final List<HBox> panes = new ArrayList<>();
+	Stage thisStage;
 
 	public static void main(String[] args) {	
 		launch(args);
@@ -48,6 +45,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		
+		thisStage=stage;
+		
 		Map<Integer, Location> map = new HashMap<>();
 		
 		// load locations from method or file
@@ -55,17 +54,10 @@ public class Main extends Application {
 		map = Convert.toMap(locs);
 		content.setLocations(map);
 		
-		panes.clear();
-		panes.addAll(makePanes());
+		List<HBox> panes = new ArrayList<>(makePanes(thisStage));
+		//panes.clear();
 		
-		TextField tf = LabelWithTextField.makeTextField("Action:", "Action",null);
-		HBox action = LabelWithTextField.getHBox("Action:", tf, (EventHandler<KeyEvent>) getEvent(stage, tf));
-		
-		Button ok = LabelWithTextField.getOkButton();
-		EventHandler<ActionEvent> event = (EventHandler<ActionEvent>) getEvent(stage, (TextField)action.getChildren().get(1));
-		ok.setOnAction(event);
-		action.getChildren().add(ok);
-		panes.add(action);
+
 		VBox pane = new VBox(3, panes.toArray(new HBox[0]));
 		Scene scene = new Scene(pane, 1000, 700);
 		
@@ -74,45 +66,68 @@ public class Main extends Application {
         stage.show();
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	private HBox setTextInputField(Stage stage, List<HBox> panes) {
+		TextField tf = LabelWithTextField.makeTextField("Action:", "Action",null);
+		HBox hboxAction = LabelWithTextField.getHBox("Action:", tf, (EventHandler<KeyEvent>) getEvent(stage, panes, tf));
+		
+		Button ok = LabelWithTextField.getOkButton();
+		EventHandler<ActionEvent> event = (EventHandler<ActionEvent>) getEvent(stage, panes, (TextField)hboxAction.getChildren().get(1));
+		ok.setOnAction(event);
+		hboxAction.getChildren().add(ok);
+		return hboxAction;
+	}
 
 	
-	private List<HBox> makePanes() {
+	private List<HBox> makePanes(Stage stage) {
 		List<HBox> panes = new ArrayList<>();
 
 		HBox menu = MenuMaker.makeMenu();
 		panes.add(menu);
 		
 		Location loc = content.getLocation(1);
-		
-		if (loc instanceof Location) {
-			String filename =((Location)loc).getImageFilename();
-			if (filename != null) {
-				Group group = new Group();
-				ImageView imageView = ImageLoader.load(filename, false);
-				group.getChildren().add(imageView);
-				
-				Set<Item> items = loc.getAllItems();
-				for (Item item: items) {
-					String itemFilename=item.getFilename();
-					if (itemFilename != null && itemFilename.length()>0) {
-						ImageView imageView2 = ImageLoader.load(itemFilename,false);
-						imageView2.setLayoutX(item.getxLoc());
-						imageView2.setLayoutY(item.getyLoc());
-						group.getChildren().add(imageView2);
-					}
-				}
-				panes.add(new HBox(group));
-			}
-		}
-		
+		updateLocation(loc,panes);
+
 		content.setInput(gameAction.getCommands());
 		content.addInput(loc.getInfo());
 		panes.add(content.getTextConsole());
+		panes.add(setTextInputField(stage, panes));
 		
 		return panes;
 	}
 	
-	private EventHandler<? extends Event> getEvent(Stage stage, TextField textField) {
+	private void updateLocation(Location loc, List<HBox> panes) {
+		if (loc instanceof Location) {
+			String filename =((Location)loc).getImageFilename();
+			if (filename != null) {
+				ImageView imageView = ImageLoader.load(filename, false);
+				Group group = new Group();
+				group.getChildren().add(imageView);
+				addItems(loc, group);
+				if (panes.size()>1) {
+					panes.set(1,new HBox(group));
+				} else {
+					panes.add(new HBox(group));
+				}
+			}
+		}
+	}
+	
+	private void addItems(Location loc, Group group) {
+		Set<Item> items = loc.getAllItems();
+		for (Item item: items) {
+			String itemFilename=item.getFilename();
+			if (itemFilename != null && itemFilename.length()>0) {
+				ImageView imageView2 = ImageLoader.load(itemFilename,false);
+				imageView2.setLayoutX(item.getxLoc());
+				imageView2.setLayoutY(item.getyLoc());
+				group.getChildren().add(imageView2);
+			}
+		}
+	}
+	
+	private EventHandler<? extends Event> getEvent(Stage stage, List<HBox> panes, TextField textField) {
 		return new EventHandler<Event>() {
 
 			@Override
@@ -131,13 +146,7 @@ public class Main extends Application {
 					if (!results.equals("Exit")) {
 						content.setInput(results);
 						Location loc=content.getCurrentLocation();
-						if (loc instanceof Location) {
-							String filename = ((Location)loc).getImageFilename();
-							if (filename != null) {
-								ImageView imageView = ImageLoader.load(filename, false);
-								panes.set(1,new HBox(imageView));
-							}
-						}
+						updateLocation(loc,panes);
 						panes.set(2, content.getTextConsole());
 						VBox pane = new VBox(3, panes.toArray(new HBox[0]));
 						Scene scene = new Scene(pane, 1000, 700);

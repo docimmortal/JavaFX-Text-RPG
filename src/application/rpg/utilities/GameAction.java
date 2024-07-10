@@ -43,11 +43,11 @@ public class GameAction {
 			result+=current.getInfo();
 		} else if (!action.equals("Exit")){
 			String locationName = gameContent.getCurrentLocation().getName();
-			if (locationName.equals("shop")) {
+			if (locationName.equals("Shop")) {
 				result=ShopEvent.doAction(action, gameContent);
-			} else if (locationName.equals("church")) {
+			} else if (locationName.equals("Church")) {
 				result=ChurchEvent.doAction(action, gameContent);
-			} else if (locationName.equals("forest")) {
+			} else if (locationName.equals("Forest")) {
 				result=CombatEvent.doAction(action, gameContent);
 			} else {
 				result=LocationEvent.doAction(action, gameContent);
